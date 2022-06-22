@@ -1,0 +1,15 @@
+.books-list__container {
+    padding: 20px 5px;
+}
+
+.books-list__found {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.books-list__book-cards {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: left;
+    gap: 15px;
+}
