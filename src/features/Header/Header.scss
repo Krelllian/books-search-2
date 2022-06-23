@@ -13,21 +13,21 @@
     margin-bottom: 10px;
 }
 
-.header__input {
+.header__input-wrapper {
     position: relative;
     max-width: 500px;
     width: 100%;
     margin-bottom: 20px;
+}
 
-    input {
-        border: 1px solid gray;
-        width: 100%;
-        padding: 8px;
+.header__input {
+    border: 1px solid gray;
+    width: 100%;
+    padding: 8px;
 
-        &::placeholder {
-            font-family: 'Times New Roman', Times, serif;
-            opacity: 0.7;
-        }
+    &::placeholder {
+        font-family: 'Times New Roman', Times, serif;
+        opacity: 0.7;
     }
 }
 

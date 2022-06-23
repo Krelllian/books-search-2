@@ -15,16 +15,22 @@ export interface IBook {
     etag: string,
     id: string,
     volumeInfo: {
-        authors: string[],
-        categories: string[],
-        imageLinks: {
-            smallThumbnail: string,
-            thubnail: string,
+        authors?: string[],
+        categories?: string[],
+        imageLinks?: {
+            smallThumbnail?: string,
+            thubnail?: string,
         }
-
-        language: string,
-        subtitle: string,
-        title: string,
+        language?: string,
+        subtitle?: string,
+        title?: string,
     }
 
+}
+
+export interface ILoadMoreBooks {
+    bookName: string,
+    category: string,
+    sortBy: string,
+    startIndex: number,
 }

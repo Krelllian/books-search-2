@@ -1,5 +1,33 @@
 .book-card {
-    background-color: rgb(182, 182, 182);
+    background-color: #f3f2f1;
     width: 240px;
-    padding: 5px;
+    padding: 20px;
+    cursor: pointer;
+}
+
+.book-card__img {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 40px;
+    height: 200px;
+
+    img {
+        box-shadow: 10px 11px 10px 1px rgb(34 60 80 / 20%)
+    }
+}
+
+.book-card__category {
+    color: #979ea1;
+    font-size: 14px;
+    text-decoration: underline;
+    margin-bottom: 15px;
+}
+
+.book-card__title {
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.book-card__authors {
+    color: #979ea1;
 }
