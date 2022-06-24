@@ -17,7 +17,7 @@
 }
 
 .book-card__category {
-    color: #979ea1;
+    color: var(--grey-color);
     font-size: 14px;
     text-decoration: underline;
     margin-bottom: 15px;
@@ -29,5 +29,5 @@
 }
 
 .book-card__authors {
-    color: #979ea1;
+    color: var(--grey-color);
 }

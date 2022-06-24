@@ -1,9 +1,7 @@
-import React, { useState } from 'react'
 import './BooksList.scss'
 import BookCard from '../BookCard/BookCard'
 import { useAppDispatch, useAppSelector } from '../../app/hooks'
-import { fetchBooks, addBooksToState, loadMoreBooks } from '../../app/toolkitSlices/booksSearchSlice'
-import BookCardDetailed from '../BookCardDetailed/BookCardDetailed'
+import { loadMoreBooks } from '../../app/toolkitSlices/booksSearchSlice'
 
 const BooksList = () => {
 
@@ -12,17 +10,13 @@ const BooksList = () => {
   const booksFound = booksSearchStore.foundBooksNumber
   const renderedBooksNumber = booksSearchStore.renderedBooksNumber
   const stateStatus = booksSearchStore.status
-  const showBookDetailedCard = booksSearchStore.showDetailedbookCard
-  const currentBookEtug = booksSearchStore.showDetailedbookCardEtag
 
-  console.log('renderedBooksNumber', renderedBooksNumber)
   const dispatch = useAppDispatch();
 
   const loadMoreBooksHandler = () => {
     const input: HTMLInputElement | null = document.querySelector('.header__input')
     const category: HTMLSelectElement | null = document.querySelector('.header__sorting-category__select')
     const sortBy: HTMLSelectElement | null = document.querySelector('.header__sorting-by__select')
-    console.log(input?.value, category?.value, sortBy?.value)
 
     if (input && category && sortBy) {
       dispatch(loadMoreBooks({ bookName: input.value, category: category.value, sortBy: sortBy.value, startIndex: renderedBooksNumber }))
@@ -43,7 +37,7 @@ const BooksList = () => {
           })}
         </div>
         {(renderedBooksNumber >= booksFound) ? '' :
-          <button className='books-list__show-more-btn' onClick={loadMoreBooksHandler}>Show more books</button>
+          <button className='books-list__show-more-btn' onClick={loadMoreBooksHandler} aria-label="load more books">Show more books</button>
         }
       </div>
 

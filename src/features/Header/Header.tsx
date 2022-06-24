@@ -2,32 +2,31 @@ import React, { useEffect, useState } from 'react'
 import './Header.scss'
 import { useAppDispatch } from '../../app/hooks'
 import { fetchBooks } from '../../app/toolkitSlices/booksSearchSlice'
-const Header = () => {
-    const [inputValue, setInputValue] = useState('js')
+import { useNavigate } from 'react-router-dom'
 
-    const dispatch = useAppDispatch();
+const Header = () => {
+    const [inputValue, setInputValue] = useState('javascript')
+
+    const navigate = useNavigate()
+    const dispatch = useAppDispatch()
 
     useEffect(() => {
-        console.log()
-        dispatch(fetchBooks({ bookName: 'js', category: '', sortBy: 'relevance' }))
-    }, [])
-
+        dispatch(fetchBooks({ bookName: 'javascript', category: '', sortBy: 'relevance' }))
+    }, [dispatch])
 
     const fetchBooksHandler = () => {
-        console.log("fetchBooksHandler", fetchBooksHandler)
+        navigate('/')
         const input: HTMLInputElement | null = document.querySelector('.header__input')
         const category: HTMLSelectElement | null = document.querySelector('.header__sorting-category__select')
         const sortBy: HTMLSelectElement | null = document.querySelector('.header__sorting-by__select')
-        console.log(input?.value, category?.value, sortBy?.value)
 
         if (input?.value && category && sortBy) {
             dispatch(fetchBooks({ bookName: input.value, category: category.value, sortBy: sortBy.value }))
         }
-
     }
 
     const inputPressEnterHandler = (e: React.KeyboardEvent<HTMLInputElement>) => {
-        console.log(e.key)
+        navigate('/')
         const input: HTMLInputElement | null = document.querySelector('.header__input')
         const category: HTMLSelectElement | null = document.querySelector('.header__sorting-category__select')
         const sortBy: HTMLSelectElement | null = document.querySelector('.header__sorting-by__select')
@@ -40,7 +39,6 @@ const Header = () => {
 
     const inputHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
         setInputValue(e.target.value)
-        console.log(inputValue)
     }
 
     return (
@@ -49,7 +47,7 @@ const Header = () => {
                 <h1 className='header__title'> Search for books </h1>
                 <div className='header__input-wrapper'>
                     <input value={inputValue} onChange={inputHandler} onKeyDown={inputPressEnterHandler} className='header__input' placeholder='Book name...'
-                    ></input><button className='header__input-button' onClick={fetchBooksHandler}></button>
+                    ></input><button className='header__input-button' onClick={fetchBooksHandler} aria-label="search book"></button>
                 </div>
                 <div className='header__sorting'>
                     <label className='header__sorting-category'>Categories

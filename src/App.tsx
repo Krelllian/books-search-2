@@ -12,7 +12,7 @@ function App() {
       <Header />
       <Routes>
         <Route path='/' element={<BooksList />} />
-        <Route path='/books/:etag' element={<BookCardDetailed />} />
+        <Route path='/books/:bookId' element={<BookCardDetailed />} />
       </Routes>
     </div>
   );

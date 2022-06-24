@@ -1,4 +1,3 @@
-
 export interface IFetchBooksProps {
     bookName: string,
     category: string,
@@ -20,10 +19,12 @@ export interface IBook {
         imageLinks?: {
             smallThumbnail?: string,
             thubnail?: string,
+            medium?: string,
         }
         language?: string,
         subtitle?: string,
         title?: string,
+        description?: string,
     }
 
 }

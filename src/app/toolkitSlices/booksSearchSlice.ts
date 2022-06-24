@@ -1,6 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import axios, { AxiosResponse } from 'axios';
-import { RootState, AppThunk } from '../store';
 import { IBook, IBooksData, IFetchBooksProps, ILoadMoreBooks } from './booksSearchTypes';
 
 export interface IBooksSearchState {
@@ -8,8 +7,6 @@ export interface IBooksSearchState {
     status: 'idle' | 'loading' | 'failed';
     foundBooksNumber: number,
     renderedBooksNumber: number,
-    showDetailedbookCard: boolean,
-    showDetailedbookCardEtag: string,
 }
 
 const initialState: IBooksSearchState = {
@@ -17,19 +14,14 @@ const initialState: IBooksSearchState = {
     status: 'idle',
     foundBooksNumber: 0,
     renderedBooksNumber: 0,
-    showDetailedbookCard: false,
-    showDetailedbookCardEtag: '',
 };
 
 
 const apiKey = process.env.REACT_APP_API_KEY
-const booksUrl = 'https://www.googleapis.com/books/v1/volumes/'
-const q = 'js'
 
 export const fetchBooks = createAsyncThunk(
     'booksSearch/fetchBooks',
     async ({ bookName, category, sortBy }: IFetchBooksProps, { rejectWithValue, dispatch }) => {
-        console.log('fetchBooks', process.env.REACT_APP_API_KEY_TWO)
 
         try {
             const response: AxiosResponse<IBooksData, any> = await axios({
@@ -39,27 +31,26 @@ export const fetchBooks = createAsyncThunk(
 
             dispatch(setTotalBooksNumber(response.data.totalItems))
             dispatch(setBooksData(response.data.items))
-            // Сделать проверку на максимальное количество книг, которое можно отрендерить
             dispatch(setRenderedBooksNumber(30))
-            console.log(response.data)
         } catch (error: any) {
             return rejectWithValue(error.message)
         }
     }
 );
 
-
 export const loadMoreBooks = createAsyncThunk(
     'booksSearch/loadMoreBooks',
     async ({ bookName, category, sortBy, startIndex }: ILoadMoreBooks, { rejectWithValue, dispatch }) => {
-        const response: AxiosResponse<IBooksData, any> = await axios({
-            method: 'get',
-            url: `https://www.googleapis.com/books/v1/volumes?q=intitle:${bookName}+subject:${category}&orderBy=${sortBy}&printType=books&key=${apiKey}&startIndex=${startIndex}&maxResults=10`
-        });
-        console.log('load more books ', response.data.items)
-        dispatch(addBooksToState(response.data.items))
-        // Сделать проверку на максимальное количество книг, которое можно отрендерить
-        dispatch(increaseRenderedBooksNumber(10))
+        try {
+            const response: AxiosResponse<IBooksData, any> = await axios({
+                method: 'get',
+                url: `https://www.googleapis.com/books/v1/volumes?q=intitle:${bookName}+subject:${category}&orderBy=${sortBy}&printType=books&key=${apiKey}&startIndex=${startIndex}&maxResults=10`
+            });
+            dispatch(addBooksToState(response.data.items))
+            dispatch(increaseRenderedBooksNumber(10))
+        } catch (error: any) {
+            return rejectWithValue(error.message)
+        }
     }
 );
 
@@ -82,13 +73,6 @@ export const booksSearchSlice = createSlice({
         setRenderedBooksNumber: (state, action: PayloadAction<number>) => {
             state.renderedBooksNumber = action.payload
         },
-        hideDetailedBookCard: (state) => {
-            state.showDetailedbookCard = false
-        },
-        showDetailedBookCard: (state, action: PayloadAction<string>) => {
-            state.showDetailedbookCard = true
-            state.showDetailedbookCardEtag = action.payload
-        },
 
     },
     extraReducers: (builder) => {
@@ -101,12 +85,15 @@ export const booksSearchSlice = createSlice({
             })
             .addCase(fetchBooks.rejected, (state, action) => {
                 state.status = 'failed';
-                console.log('Server error:', action.payload);
-            });
+                console.error('Failed to load books:', action.payload);
+            })
+            .addCase(loadMoreBooks.rejected, (state, action) => {
+                console.error('Failed to load more books:', action.payload);
+            })
     },
 });
 
 export const { increaseRenderedBooksNumber, setTotalBooksNumber, setBooksData, addBooksToState,
-    setRenderedBooksNumber, hideDetailedBookCard, showDetailedBookCard, } = booksSearchSlice.actions;
+    setRenderedBooksNumber, } = booksSearchSlice.actions;
 
 export default booksSearchSlice.reducer;
