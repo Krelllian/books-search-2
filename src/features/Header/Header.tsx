@@ -26,12 +26,13 @@ const Header = () => {
     }
 
     const inputPressEnterHandler = (e: React.KeyboardEvent<HTMLInputElement>) => {
-        navigate('/')
+
         const input: HTMLInputElement | null = document.querySelector('.header__input')
         const category: HTMLSelectElement | null = document.querySelector('.header__sorting-category__select')
         const sortBy: HTMLSelectElement | null = document.querySelector('.header__sorting-by__select')
         if (e.key === 'Enter') {
             if (input?.value && category && sortBy) {
+                navigate('/')
                 dispatch(fetchBooks({ bookName: input.value, category: category.value, sortBy: sortBy.value }))
             }
         }
